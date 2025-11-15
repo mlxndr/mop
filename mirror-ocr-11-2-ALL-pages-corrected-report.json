@@ -1,0 +1,11 @@
+{
+  "total_pages_processed": 3410,
+  "total_corrections": 1,
+  "corrections_by_type": [
+    {
+      "original": "DUEX",
+      "corrected": "DUKE",
+      "count": 1
+    }
+  ]
+}
