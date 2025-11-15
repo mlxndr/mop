@@ -17,10 +17,21 @@ This script:
 
 ## Headers vs Content
 
-**ONLY these headers are extracted:**
-- `HOUSE OF COMMONS` or `HOUSE OF LORDS` (with optional dates like "4° DIE FEBRUARII, 1834")
-- Must be followed by two line breaks (blank line)
-- Uses fuzzy matching to handle OCR errors
+**Headers extracted (removed from markdown):**
+
+1. **HOUSE OF COMMONS/LORDS headers:**
+   - `HOUSE OF COMMONS` or `HOUSE OF LORDS` (with optional dates)
+   - Example: `HOUSE OF LORDS, MARTIS, 4° DIE FEBRUARII, 1834.`
+   - Uses fuzzy matching to handle OCR errors
+
+2. **Standalone date headers:**
+   - Month name followed by numbers and punctuation
+   - Example: `FEBRUARY 4`, `February 5, 18`, `MARCH 10, 1834.`
+   - Allows numbers, punctuation, and I/i/l (for OCR errors and roman numerals)
+
+**Requirements for extraction:**
+- Must be followed by two line breaks (blank line after)
+- Appears at the very start of a page
 
 **These remain in markdown** (NOT extracted):
 - Section titles like `PRIVATE BUSINESS`, `APPEALS`, `SELECT VESTRIES BILL`
@@ -92,7 +103,22 @@ Note: `header` is now a single string (not an array), and section titles like "S
 
 From processing `mirror-ocr-11-2-ALL-pages.json`:
 - **Total pages:** 3,410
-- **Headers extracted:** 323 (HOUSE OF LORDS/COMMONS only)
-- **Hyphenated words joined:** ~930 successful joins
-- **Pages still ending with hyphens:** 51 (legitimate hyphens or edge cases)
+- **Headers extracted:** 339 total
+  - HOUSE OF COMMONS/LORDS: 320
+  - Date headers: 19
+- **Hyphenated words joined:** ~684 successful joins
+- **Pages still ending with hyphens:** 48 (legitimate hyphens or edge cases)
 - **Footers removed:** All instances
+
+### Example Headers Extracted
+
+**HOUSE headers:**
+- `HOUSE OF LORDS, MARTIS, 4° DIE FEBRUARII, 1834.`
+- `HOUSE OF COMMONS.`
+- `HOUSE OF COMMONS, 110 181001` (OCR error, still matched)
+
+**Date headers:**
+- `FEBRUARY 4.1`
+- `February 5, 18`
+- `February 11.1`
+- `FEBRUARY 10.`

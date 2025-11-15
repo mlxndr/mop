@@ -29,6 +29,47 @@ def fuzzy_match(text: str, target: str, threshold: float = 0.8) -> bool:
     return similarity >= threshold
 
 
+def is_date_header(line: str) -> bool:
+    """
+    Check if a line is a standalone date header.
+
+    Examples:
+    - "FEBRUARY 4"
+    - "February 5, 18"
+    - "MARCH 10, 1834."
+
+    Pattern: Month name followed by numbers, punctuation, and optionally I/i/l
+    """
+    line_stripped = line.strip()
+
+    # Month names (various cases due to OCR)
+    months = ['january', 'february', 'march', 'april', 'may', 'june',
+              'july', 'august', 'september', 'october', 'november', 'december',
+              'jan', 'feb', 'mar', 'apr', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+
+    # Check if starts with a month name
+    first_word = line_stripped.split()[0] if line_stripped.split() else ''
+    if first_word.lower() not in months:
+        return False
+
+    # Get the rest after the month
+    rest = line_stripped[len(first_word):].strip()
+
+    # Should contain only numbers, punctuation, and I/i/l
+    # Allow common date punctuation and roman numerals
+    allowed_chars = set('0123456789.,;:°*\' -—IilVXLCDM')
+
+    if not rest:
+        return False
+
+    # Check if all remaining characters are allowed
+    for char in rest:
+        if char not in allowed_chars:
+            return False
+
+    return True
+
+
 def is_parliamentary_house_header(line: str) -> bool:
     """
     Check if a line is a HOUSE OF LORDS or HOUSE OF COMMONS header.
@@ -49,13 +90,22 @@ def is_parliamentary_house_header(line: str) -> bool:
     return False
 
 
+def is_header_line(line: str) -> bool:
+    """
+    Check if a line is any type of header (HOUSE or DATE).
+    """
+    return is_parliamentary_house_header(line) or is_date_header(line)
+
+
 def extract_header(markdown: str) -> Tuple[Optional[str], str]:
     """
-    Extract ONLY the HOUSE OF LORDS/COMMONS header line from the beginning.
+    Extract header lines from the beginning.
 
-    Only extracts headers like:
+    Extracts headers like:
     - "HOUSE OF COMMONS."
     - "HOUSE OF LORDS, MARTIS, 4° DIE FEBRUARII, 1834."
+    - "FEBRUARY 4"
+    - "February 5, 18"
 
     Does NOT extract section titles like "PRIVATE BUSINESS", "SELECT VESTRIES BILL"
     as these need to stay with the speeches.
@@ -65,7 +115,7 @@ def extract_header(markdown: str) -> Tuple[Optional[str], str]:
     """
     lines = markdown.split('\n')
 
-    # Check if the first non-empty line is a parliamentary house header
+    # Check if the first non-empty line is a header
     first_line_idx = 0
     for i, line in enumerate(lines):
         stripped = line.strip()
@@ -78,8 +128,8 @@ def extract_header(markdown: str) -> Tuple[Optional[str], str]:
 
     first_line = lines[first_line_idx].strip()
 
-    # Check if it's a HOUSE OF LORDS/COMMONS header (with fuzzy matching)
-    if not is_parliamentary_house_header(first_line):
+    # Check if it's a header (HOUSE or DATE)
+    if not is_header_line(first_line):
         return None, markdown
 
     # Extract only this header line
@@ -135,6 +185,8 @@ def join_hyphenated_words(prev_markdown: str, curr_markdown: str) -> Tuple[str, 
     and the current page starts with the continuation (e.g., "thing"),
     join them together.
 
+    Does NOT join if the current page starts with a header that will be extracted.
+
     Args:
         prev_markdown: Markdown from previous page
         curr_markdown: Markdown from current page
@@ -150,8 +202,14 @@ def join_hyphenated_words(prev_markdown: str, curr_markdown: str) -> Tuple[str, 
     if not prev_match:
         return prev_markdown, curr_markdown
 
-    # Strip leading whitespace from current page to find the orphan word
+    # Strip leading whitespace from current page to find what comes next
     curr_stripped = curr_markdown.lstrip()
+
+    # Check if current page starts with a header (which will be extracted)
+    # In this case, don't join - the header will be removed separately
+    first_line = curr_stripped.split('\n')[0] if curr_stripped else ''
+    if is_header_line(first_line):
+        return prev_markdown, curr_markdown
 
     # Check if current page starts with a word (orphan)
     # The orphan should be lowercase to be a continuation
@@ -163,12 +221,6 @@ def join_hyphenated_words(prev_markdown: str, curr_markdown: str) -> Tuple[str, 
 
     # Orphan must be lowercase (true word continuation, not a new sentence)
     if not orphan_part.islower():
-        return prev_markdown, curr_markdown
-
-    # Don't join if orphan looks like a month name or other header element
-    month_names = ['january', 'february', 'march', 'april', 'may', 'june',
-                   'july', 'august', 'september', 'october', 'november', 'december']
-    if orphan_part.lower() in month_names:
         return prev_markdown, curr_markdown
 
     # Orphan should typically be short (a real fragment, not a full word)
