@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 data/
+ocr-corrections-report.jsonl
+ocr-statistics.json
