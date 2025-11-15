@@ -14,6 +14,15 @@ from dataclasses import dataclass, asdict
 from typing import List, Dict, Set, Tuple, Optional
 import math
 from pathlib import Path
+import time
+
+# Verbose logging flag
+VERBOSE = os.environ.get('VERBOSE', '0') == '1'
+
+def log(msg: str, force: bool = False):
+    """Log message if verbose mode enabled"""
+    if VERBOSE or force:
+        print(f"[{time.strftime('%H:%M:%S')}] {msg}", file=sys.stderr)
 
 # Check for required dependencies
 try:
@@ -423,14 +432,27 @@ class EditDistanceCorrector:
         threshold = self.config['edit_distance_threshold']
         word_lower = word.lower()
 
+        # Early exit if word is too short
+        if len(word) < 3:
+            return []
+
+        checked = 0
+        max_checks = 200  # Limit how many words we check
+
         # Quick filter: only check words with similar length
         for vocab_word in self.vocabulary:
+            if checked >= max_checks:
+                break
+
+            # Length filter
             if abs(len(vocab_word) - len(word)) > threshold:
                 continue
 
-            # Quick check: first letter should be similar
+            # First letter filter (allow 1-2 char difference in ASCII)
             if abs(ord(vocab_word[0]) - ord(word_lower[0])) > 2:
                 continue
+
+            checked += 1
 
             dist = levenshtein_distance(word_lower, vocab_word)
             if dist <= threshold and dist > 0:
@@ -498,20 +520,28 @@ class OCRCorrector:
         with open(input_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        pages = data.get('pages', [])
-        print(f"✓ Loaded {len(pages)} pages\n")
+        all_pages = data.get('pages', [])
+
+        # Sample pages if requested (but build vocabulary from all pages)
+        if self.config.get('sample_pages'):
+            sample_size = self.config['sample_pages']
+            pages = all_pages[:sample_size]
+            print(f"✓ Loaded {len(all_pages)} pages, processing first {len(pages)} (sample mode)\n")
+        else:
+            pages = all_pages
+            print(f"✓ Loaded {len(pages)} pages\n")
 
         # Initialize all components
         print("=== Initializing Components ===")
         self.dict_checker = DictionaryChecker(self.config, self.data_dir)
         self.confusion_detector = ConfusionDetector(self.config, self.dict_checker)
         self.entity_validator = EntityValidator(self.config)
-        self.ngram_scorer = NgramScorer(pages, self.config)
+        self.ngram_scorer = NgramScorer(all_pages, self.config)
         self.edit_corrector = EditDistanceCorrector(self.config, self.dict_checker, self.ngram_scorer)
         self.struct_validator = StructuralValidator(self.config)
 
-        # Build vocabulary for edit distance
-        self.edit_corrector.build_vocabulary(pages)
+        # Build vocabulary for edit distance (use ALL pages, even in sample mode)
+        self.edit_corrector.build_vocabulary(all_pages)
 
         # Extract entities (sampled)
         self.entity_validator.extract_entities(pages)
@@ -521,10 +551,19 @@ class OCRCorrector:
         print("=== Processing Pages ===")
         all_errors = []
         corrections_applied = 0
+        start_time = time.time()
 
         for i, page in enumerate(pages):
-            if i % 100 == 0:
-                print(f"Processing page {i}/{len(pages)}... ({corrections_applied} corrections so far)")
+            page_start = time.time()
+
+            if i % 10 == 0 and i > 0:
+                elapsed = time.time() - start_time
+                rate = i / elapsed
+                eta = (len(pages) - i) / rate if rate > 0 else 0
+                print(f"Processing page {i}/{len(pages)}... "
+                      f"({corrections_applied} corrections, "
+                      f"{rate:.1f} pages/sec, "
+                      f"ETA: {eta/60:.1f} min)")
 
             page_errors = self._process_page(page)
             all_errors.extend(page_errors)
@@ -537,6 +576,9 @@ class OCRCorrector:
             )
             corrections_applied += applied
 
+            page_time = time.time() - page_start
+            log(f"Page {i} completed in {page_time:.2f}s, {applied} corrections applied", force=True)
+
         print(f"✓ Processed {len(pages)} pages")
         print(f"✓ Found {len(all_errors)} potential errors")
         print(f"✓ Auto-applied {corrections_applied} high-confidence corrections\n")
@@ -544,6 +586,9 @@ class OCRCorrector:
         # Write outputs
         print("=== Writing Outputs ===")
         self._write_report(all_errors, output_report)
+
+        # Update data with processed pages
+        data['pages'] = pages
         self._write_corrected(data, output_corrected)
         self._write_statistics(all_errors)
 
@@ -558,12 +603,23 @@ class OCRCorrector:
         markdown = page.get('markdown', '')
         page_idx = page.get('index', 0)
 
+        log(f"Page {page_idx}: Starting tokenization")
+        t0 = time.time()
+
         # Tokenize with positions
         words_with_pos = self._tokenize_with_positions(markdown)
+        log(f"Page {page_idx}: Tokenized {len(words_with_pos)} words in {time.time()-t0:.2f}s")
 
         # METHOD 1 + 2: Dictionary check + Confusion patterns
-        for word, pos in words_with_pos:
+        unknown_words = 0
+        t1 = time.time()
+
+        for i, (word, pos) in enumerate(words_with_pos):
+            if i % 100 == 0 and i > 0:
+                log(f"Page {page_idx}: Checked {i}/{len(words_with_pos)} words, {unknown_words} unknown")
+
             if not self.dict_checker.check_word(word):
+                unknown_words += 1
                 # Found unknown word
                 error = ErrorCandidate(
                     page_index=page_idx,
@@ -579,10 +635,10 @@ class OCRCorrector:
                 if confusions:
                     error.error_types.append('confusion_pattern')
                     error.suggested_corrections.extend(confusions)
-                else:
-                    # METHOD 5: Only do edit distance if no confusion match (slow)
-                    # And only for words between 4-15 chars
-                    if 4 <= len(word) <= 15:
+
+                # METHOD 5: Edit distance for words between 4-12 chars (if no high-confidence confusion match)
+                if len(error.suggested_corrections) == 0 or error.suggested_corrections[0][1] < 0.9:
+                    if 4 <= len(word) <= 12:
                         context_words = []  # Skip context for speed
                         edit_corrections = self.edit_corrector.generate_corrections(word, context_words)
                         if edit_corrections:
@@ -592,7 +648,8 @@ class OCRCorrector:
                 if error.suggested_corrections:
                     errors.append(error)
 
-        # Skip methods 3, 4, 6 for performance (already disabled above)
+        log(f"Page {page_idx}: Dictionary check took {time.time()-t1:.2f}s, found {unknown_words} unknown words")
+        log(f"Page {page_idx}: Total time {time.time()-t0:.2f}s, {len(errors)} errors with suggestions")
 
         return errors
 
@@ -719,12 +776,30 @@ def main():
         default='data',
         help='Data directory for dictionaries (default: data/)'
     )
+    parser.add_argument(
+        '--sample',
+        type=int,
+        default=None,
+        help='Process only first N pages (for testing)'
+    )
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Enable verbose logging'
+    )
 
     args = parser.parse_args()
+
+    # Set verbose mode
+    if args.verbose:
+        os.environ['VERBOSE'] = '1'
+        global VERBOSE
+        VERBOSE = True
 
     # Update config with args
     CONFIG['auto_correct_threshold'] = args.threshold
     CONFIG['data_dir'] = args.data_dir
+    CONFIG['sample_pages'] = args.sample
 
     # Run correction
     corrector = OCRCorrector(CONFIG)
