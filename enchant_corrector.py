@@ -53,6 +53,10 @@ class HybridSpellChecker:
             "Maryborough",   # Town in Ireland (now Port Laoise)
             "Swanton",       # Villages in Norfolk (Swanton Morley, etc.)
             "Campion",       # Surname (Mr. Campion, magistrate)
+            # Iteration 4
+            "Mold",          # Town in Wales (Flintshire)
+            # Iteration 5
+            "Buxton",        # Town in Derbyshire + surname (brewery firm)
         ]
 
         # Add all whitelisted words
@@ -61,7 +65,7 @@ class HybridSpellChecker:
 
         print(f"✓ Initialized hybrid spell checker with en_GB dictionary")
         print(f"✓ Added {len(historical_spellings)} historical spellings to whitelist")
-        print(f"✓ Added {len(proper_nouns)} proper nouns to whitelist (Iterations 1-3)")
+        print(f"✓ Added {len(proper_nouns)} proper nouns to whitelist (Iterations 1-5 FINAL)")
 
     def build_corpus_frequency(self, pages: List[dict]) -> None:
         """Build word frequency dictionary from the entire corpus."""

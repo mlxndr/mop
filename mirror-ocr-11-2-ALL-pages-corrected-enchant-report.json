@@ -2,13 +2,13 @@
   "statistics": {
     "pages_processed": 3410,
     "words_checked": 4093901,
-    "words_invalid": 71060,
-    "corrections_applied": 6246,
-    "processing_time": 569.7143061161041,
-    "pages_per_second": 5.985456154764462
+    "words_invalid": 71050,
+    "corrections_applied": 6238,
+    "processing_time": 768.7917010784149,
+    "pages_per_second": 4.435531750949778
   },
   "summary": {
-    "total_corrections": 6246,
+    "total_corrections": 6238,
     "unique_correction_types": 4513,
     "top_corrections": [
       [
@@ -200,15 +200,15 @@
         5
       ],
       [
-        "Mold → Mild",
-        5
-      ],
-      [
         "trates → rates",
         5
       ],
       [
         "bene → been",
+        5
+      ],
+      [
+        "advecting → adverting",
         5
       ]
     ]
@@ -403,15 +403,15 @@
       "count": 5
     },
     {
-      "correction": "Mold → Mild",
-      "count": 5
-    },
-    {
       "correction": "trates → rates",
       "count": 5
     },
     {
       "correction": "bene → been",
+      "count": 5
+    },
+    {
+      "correction": "advecting → adverting",
       "count": 5
     }
   ]
