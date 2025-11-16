@@ -1,0 +1,418 @@
+{
+  "statistics": {
+    "pages_processed": 3410,
+    "words_checked": 4093901,
+    "words_invalid": 71190,
+    "corrections_applied": 6365,
+    "processing_time": 580.646981716156,
+    "pages_per_second": 5.872759365632848
+  },
+  "summary": {
+    "total_corrections": 6365,
+    "unique_correction_types": 4521,
+    "top_corrections": [
+      [
+        "ment → meant",
+        66
+      ],
+      [
+        "tranquility → tranquillity",
+        65
+      ],
+      [
+        "arrear → arrears",
+        62
+      ],
+      [
+        "Freeling → Feeling",
+        36
+      ],
+      [
+        "recognized → recognised",
+        30
+      ],
+      [
+        "offenses → offences",
+        28
+      ],
+      [
+        "ingrossed → engrossed",
+        24
+      ],
+      [
+        "recognize → recognise",
+        23
+      ],
+      [
+        "Discenters → Dissenters",
+        22
+      ],
+      [
+        "pretense → pretence",
+        20
+      ],
+      [
+        "defense → defence",
+        19
+      ],
+      [
+        "Frome → From",
+        19
+      ],
+      [
+        "tiths → tithes",
+        16
+      ],
+      [
+        "fresholders → freeholders",
+        16
+      ],
+      [
+        "ship-owners → shipowners",
+        14
+      ],
+      [
+        "repealer → repealed",
+        14
+      ],
+      [
+        "LUNE → LINE",
+        13
+      ],
+      [
+        "monied → monies",
+        12
+      ],
+      [
+        "Gentlemen's → Gentleman's",
+        12
+      ],
+      [
+        "Dacre → Dare",
+        11
+      ],
+      [
+        "honor → honour",
+        11
+      ],
+      [
+        "practiced → practices",
+        11
+      ],
+      [
+        "conveyancer → conveyance",
+        11
+      ],
+      [
+        "Bourne → Borne",
+        10
+      ],
+      [
+        "treemen → freemen",
+        9
+      ],
+      [
+        "tithey → tithe",
+        9
+      ],
+      [
+        "Tanworth → Tamworth",
+        9
+      ],
+      [
+        "Disenters → Dissenters",
+        9
+      ],
+      [
+        "Honou → Honour",
+        9
+      ],
+      [
+        "burnings → burning",
+        9
+      ],
+      [
+        "Trepass → Trespass",
+        9
+      ],
+      [
+        "forma → formal",
+        8
+      ],
+      [
+        "land-owners → landowners",
+        8
+      ],
+      [
+        "apoliation → spoliation",
+        8
+      ],
+      [
+        "formid → formed",
+        8
+      ],
+      [
+        "tithex → tithe",
+        8
+      ],
+      [
+        "disdranchisement → disfranchisement",
+        7
+      ],
+      [
+        "Assises → Assizes",
+        7
+      ],
+      [
+        "Tennant → Tenant",
+        6
+      ],
+      [
+        "scamen → seamen",
+        6
+      ],
+      [
+        "disdranchised → disfranchised",
+        6
+      ],
+      [
+        "titbes → titles",
+        6
+      ],
+      [
+        "miscrable → miserable",
+        6
+      ],
+      [
+        "quartern → quarter",
+        6
+      ],
+      [
+        "Marquesa → Marquess",
+        6
+      ],
+      [
+        "dishonorable → dishonourable",
+        5
+      ],
+      [
+        "Willington → Wellington",
+        5
+      ],
+      [
+        "demeanor → demeanour",
+        5
+      ],
+      [
+        "disdranchise → disfranchise",
+        5
+      ],
+      [
+        "gards → guards",
+        5
+      ]
+    ]
+  },
+  "top_50_corrections": [
+    {
+      "correction": "ment → meant",
+      "count": 66
+    },
+    {
+      "correction": "tranquility → tranquillity",
+      "count": 65
+    },
+    {
+      "correction": "arrear → arrears",
+      "count": 62
+    },
+    {
+      "correction": "Freeling → Feeling",
+      "count": 36
+    },
+    {
+      "correction": "recognized → recognised",
+      "count": 30
+    },
+    {
+      "correction": "offenses → offences",
+      "count": 28
+    },
+    {
+      "correction": "ingrossed → engrossed",
+      "count": 24
+    },
+    {
+      "correction": "recognize → recognise",
+      "count": 23
+    },
+    {
+      "correction": "Discenters → Dissenters",
+      "count": 22
+    },
+    {
+      "correction": "pretense → pretence",
+      "count": 20
+    },
+    {
+      "correction": "defense → defence",
+      "count": 19
+    },
+    {
+      "correction": "Frome → From",
+      "count": 19
+    },
+    {
+      "correction": "tiths → tithes",
+      "count": 16
+    },
+    {
+      "correction": "fresholders → freeholders",
+      "count": 16
+    },
+    {
+      "correction": "ship-owners → shipowners",
+      "count": 14
+    },
+    {
+      "correction": "repealer → repealed",
+      "count": 14
+    },
+    {
+      "correction": "LUNE → LINE",
+      "count": 13
+    },
+    {
+      "correction": "monied → monies",
+      "count": 12
+    },
+    {
+      "correction": "Gentlemen's → Gentleman's",
+      "count": 12
+    },
+    {
+      "correction": "Dacre → Dare",
+      "count": 11
+    },
+    {
+      "correction": "honor → honour",
+      "count": 11
+    },
+    {
+      "correction": "practiced → practices",
+      "count": 11
+    },
+    {
+      "correction": "conveyancer → conveyance",
+      "count": 11
+    },
+    {
+      "correction": "Bourne → Borne",
+      "count": 10
+    },
+    {
+      "correction": "treemen → freemen",
+      "count": 9
+    },
+    {
+      "correction": "tithey → tithe",
+      "count": 9
+    },
+    {
+      "correction": "Tanworth → Tamworth",
+      "count": 9
+    },
+    {
+      "correction": "Disenters → Dissenters",
+      "count": 9
+    },
+    {
+      "correction": "Honou → Honour",
+      "count": 9
+    },
+    {
+      "correction": "burnings → burning",
+      "count": 9
+    },
+    {
+      "correction": "Trepass → Trespass",
+      "count": 9
+    },
+    {
+      "correction": "forma → formal",
+      "count": 8
+    },
+    {
+      "correction": "land-owners → landowners",
+      "count": 8
+    },
+    {
+      "correction": "apoliation → spoliation",
+      "count": 8
+    },
+    {
+      "correction": "formid → formed",
+      "count": 8
+    },
+    {
+      "correction": "tithex → tithe",
+      "count": 8
+    },
+    {
+      "correction": "disdranchisement → disfranchisement",
+      "count": 7
+    },
+    {
+      "correction": "Assises → Assizes",
+      "count": 7
+    },
+    {
+      "correction": "Tennant → Tenant",
+      "count": 6
+    },
+    {
+      "correction": "scamen → seamen",
+      "count": 6
+    },
+    {
+      "correction": "disdranchised → disfranchised",
+      "count": 6
+    },
+    {
+      "correction": "titbes → titles",
+      "count": 6
+    },
+    {
+      "correction": "miscrable → miserable",
+      "count": 6
+    },
+    {
+      "correction": "quartern → quarter",
+      "count": 6
+    },
+    {
+      "correction": "Marquesa → Marquess",
+      "count": 6
+    },
+    {
+      "correction": "dishonorable → dishonourable",
+      "count": 5
+    },
+    {
+      "correction": "Willington → Wellington",
+      "count": 5
+    },
+    {
+      "correction": "demeanor → demeanour",
+      "count": 5
+    },
+    {
+      "correction": "disdranchise → disfranchise",
+      "count": 5
+    },
+    {
+      "correction": "gards → guards",
+      "count": 5
+    }
+  ]
+}
