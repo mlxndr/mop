@@ -35,11 +35,33 @@ class HybridSpellChecker:
             "chuse", "chusing",         # choose/choosing
         ]
 
-        for word in historical_spellings:
+        # Proper nouns (people, places) from 1834 parliamentary records
+        # Iteration 1: Top false positives identified from initial run
+        proper_nouns = [
+            "Freeling",      # Sir Francis Freeling (Post Office Secretary)
+            "Frome",         # Frome, Somerset (town)
+            "Dacre",         # Lord Dacre (title)
+            "Bourne",        # Mr. Sturges Bourne (surname)
+            "Tanworth",      # Electoral constituency
+            "Willington",    # Mr. Willington (surname)
+            # Iteration 2
+            "Arle",          # Tithing/area in Cheltenham, Gloucester
+            "Carleton",      # Place name in Wales
+            "Brough",        # Town in England
+            "Tennant",       # Surname (Mr. Tennant, Mr. Emerson Tennant)
+            # Iteration 3
+            "Maryborough",   # Town in Ireland (now Port Laoise)
+            "Swanton",       # Villages in Norfolk (Swanton Morley, etc.)
+            "Campion",       # Surname (Mr. Campion, magistrate)
+        ]
+
+        # Add all whitelisted words
+        for word in historical_spellings + proper_nouns:
             self.dict.add(word)
 
         print(f"✓ Initialized hybrid spell checker with en_GB dictionary")
         print(f"✓ Added {len(historical_spellings)} historical spellings to whitelist")
+        print(f"✓ Added {len(proper_nouns)} proper nouns to whitelist (Iterations 1-3)")
 
     def build_corpus_frequency(self, pages: List[dict]) -> None:
         """Build word frequency dictionary from the entire corpus."""

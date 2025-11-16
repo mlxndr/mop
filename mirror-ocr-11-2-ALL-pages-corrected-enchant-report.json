@@ -2,14 +2,14 @@
   "statistics": {
     "pages_processed": 3410,
     "words_checked": 4093901,
-    "words_invalid": 71190,
-    "corrections_applied": 6365,
-    "processing_time": 580.646981716156,
-    "pages_per_second": 5.872759365632848
+    "words_invalid": 71060,
+    "corrections_applied": 6246,
+    "processing_time": 569.7143061161041,
+    "pages_per_second": 5.985456154764462
   },
   "summary": {
-    "total_corrections": 6365,
-    "unique_correction_types": 4521,
+    "total_corrections": 6246,
+    "unique_correction_types": 4513,
     "top_corrections": [
       [
         "ment → meant",
@@ -22,10 +22,6 @@
       [
         "arrear → arrears",
         62
-      ],
-      [
-        "Freeling → Feeling",
-        36
       ],
       [
         "recognized → recognised",
@@ -53,10 +49,6 @@
       ],
       [
         "defense → defence",
-        19
-      ],
-      [
-        "Frome → From",
         19
       ],
       [
@@ -88,10 +80,6 @@
         12
       ],
       [
-        "Dacre → Dare",
-        11
-      ],
-      [
         "honor → honour",
         11
       ],
@@ -104,19 +92,11 @@
         11
       ],
       [
-        "Bourne → Borne",
-        10
-      ],
-      [
         "treemen → freemen",
         9
       ],
       [
         "tithey → tithe",
-        9
-      ],
-      [
-        "Tanworth → Tamworth",
         9
       ],
       [
@@ -164,10 +144,6 @@
         7
       ],
       [
-        "Tennant → Tenant",
-        6
-      ],
-      [
         "scamen → seamen",
         6
       ],
@@ -196,10 +172,6 @@
         5
       ],
       [
-        "Willington → Wellington",
-        5
-      ],
-      [
         "demeanor → demeanour",
         5
       ],
@@ -209,6 +181,34 @@
       ],
       [
         "gards → guards",
+        5
+      ],
+      [
+        "endeavoring → endeavouring",
+        5
+      ],
+      [
+        "Distranchisement → Disfranchisement",
+        5
+      ],
+      [
+        "colonization → colonisation",
+        5
+      ],
+      [
+        "favoritism → favouritism",
+        5
+      ],
+      [
+        "Mold → Mild",
+        5
+      ],
+      [
+        "trates → rates",
+        5
+      ],
+      [
+        "bene → been",
         5
       ]
     ]
@@ -225,10 +225,6 @@
     {
       "correction": "arrear → arrears",
       "count": 62
-    },
-    {
-      "correction": "Freeling → Feeling",
-      "count": 36
     },
     {
       "correction": "recognized → recognised",
@@ -256,10 +252,6 @@
     },
     {
       "correction": "defense → defence",
-      "count": 19
-    },
-    {
-      "correction": "Frome → From",
       "count": 19
     },
     {
@@ -291,10 +283,6 @@
       "count": 12
     },
     {
-      "correction": "Dacre → Dare",
-      "count": 11
-    },
-    {
       "correction": "honor → honour",
       "count": 11
     },
@@ -307,19 +295,11 @@
       "count": 11
     },
     {
-      "correction": "Bourne → Borne",
-      "count": 10
-    },
-    {
       "correction": "treemen → freemen",
       "count": 9
     },
     {
       "correction": "tithey → tithe",
-      "count": 9
-    },
-    {
-      "correction": "Tanworth → Tamworth",
       "count": 9
     },
     {
@@ -367,10 +347,6 @@
       "count": 7
     },
     {
-      "correction": "Tennant → Tenant",
-      "count": 6
-    },
-    {
       "correction": "scamen → seamen",
       "count": 6
     },
@@ -399,10 +375,6 @@
       "count": 5
     },
     {
-      "correction": "Willington → Wellington",
-      "count": 5
-    },
-    {
       "correction": "demeanor → demeanour",
       "count": 5
     },
@@ -412,6 +384,34 @@
     },
     {
       "correction": "gards → guards",
+      "count": 5
+    },
+    {
+      "correction": "endeavoring → endeavouring",
+      "count": 5
+    },
+    {
+      "correction": "Distranchisement → Disfranchisement",
+      "count": 5
+    },
+    {
+      "correction": "colonization → colonisation",
+      "count": 5
+    },
+    {
+      "correction": "favoritism → favouritism",
+      "count": 5
+    },
+    {
+      "correction": "Mold → Mild",
+      "count": 5
+    },
+    {
+      "correction": "trates → rates",
+      "count": 5
+    },
+    {
+      "correction": "bene → been",
       "count": 5
     }
   ]
